@@ -9,13 +9,12 @@ const Interests = () => {
         { src: "japan.jpg", text: "Kyoto, Japan" },
     ];
 
-    // Automatically advance slides every 5 seconds
     useEffect(() => {
         const interval = setInterval(() => {
             setSlideIndex((prevIndex) => (prevIndex + 1) % slides.length);
         }, 5000);
 
-        return () => clearInterval(interval); // Cleanup interval on unmount
+        return () => clearInterval(interval); 
     }, []);
 
     return (

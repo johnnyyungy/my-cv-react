@@ -1,31 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Interests = () => {
     const [slideIndex, setSlideIndex] = useState(1);
 
-    const plusSlides = (n) => {
-        setSlideIndex(slideIndex + n);
-    };
-
-    const currentSlide = (n) => {
-        setSlideIndex(n);
-    };
-
+    // Function to show the current slide
     const showSlides = (n) => {
-        let i;
+        let newIndex = n;
         const slides = document.getElementsByClassName("mySlides");
-        const dots = document.getElementsByClassName("dot");
-        if (n > slides.length) { setSlideIndex(1) }
-        if (n < 1) { setSlideIndex(slides.length) }
-        for (i = 0; i < slides.length; i++) {
+
+        if (newIndex > slides.length) {
+            newIndex = 1;
+        }
+        if (newIndex < 1) {
+            newIndex = slides.length;
+        }
+
+        // Hide all slides
+        for (let i = 0; i < slides.length; i++) {
             slides[i].style.display = "none";
         }
-        for (i = 0; i < dots.length; i++) {
-            dots[i].className = dots[i].className.replace(" active", "");
-        }
-        slides[slideIndex - 1].style.display = "block";
-        dots[slideIndex - 1].className += " active";
+
+        // Show the current slide
+        slides[newIndex - 1].style.display = "block";
+
+        // Update the state
+        setSlideIndex(newIndex);
     };
+
+    // Function to move to the next/previous slide
+    const plusSlides = (n) => {
+        showSlides(slideIndex + n);
+    };
+
+    // Function to go to a specific slide
+    const currentSlide = (n) => {
+        showSlides(n);
+    };
+
+    // Automatically advance slides every 5 seconds
+    useEffect(() => {
+        const interval = setInterval(() => {
+            plusSlides(1);
+        }, 5000); // Change slide every 5 seconds
+
+        return () => clearInterval(interval); // Cleanup interval on component unmount
+    }, [slideIndex]); // Re-run effect when slideIndex changes
 
     return (
         <section className="interests" id="interests">
@@ -40,33 +59,38 @@ const Interests = () => {
                 </div>
                 <div className="photo">
                     <div className="slideshow-container">
-                        <div className={`mySlides fade ${slideIndex === 1 ? 'active' : ''}`}>
+                        {/* Slide 1 */}
+                        <div className="mySlides fade">
                             <div className="numbertext">1 / 3</div>
                             <img src="muay_thai.jpg" style={{ width: '100%' }} alt="Muay Thai" />
                             <div className="text">Muay Thai</div>
                         </div>
 
-                        <div className={`mySlides fade ${slideIndex === 2 ? 'active' : ''}`}>
+                        {/* Slide 2 */}
+                        <div className="mySlides fade">
                             <div className="numbertext">2 / 3</div>
                             <img src="toys.jpg" style={{ width: '100%' }} alt="Power Rangers Collection" />
                             <div className="text">Power Rangers Collection</div>
                         </div>
 
-                        <div className={`mySlides fade ${slideIndex === 3 ? 'active' : ''}`}>
+                        {/* Slide 3 */}
+                        <div className="mySlides fade">
                             <div className="numbertext">3 / 3</div>
                             <img src="japan.jpg" style={{ width: '100%' }} alt="Kyoto, Japan" />
                             <div className="text">Kyoto, Japan</div>
                         </div>
 
+                        {/* Next and Previous Buttons */}
                         <a className="prev" onClick={() => plusSlides(-1)}>&#10094;</a>
                         <a className="next" onClick={() => plusSlides(1)}>&#10095;</a>
                     </div>
                     <br />
 
+                    {/* Dots/Circles */}
                     <div style={{ textAlign: 'center' }}>
-                        <span className={`dot ${slideIndex === 1 ? 'active' : ''}`} onClick={() => currentSlide(1)}></span>
-                        <span className={`dot ${slideIndex === 2 ? 'active' : ''}`} onClick={() => currentSlide(2)}></span>
-                        <span className={`dot ${slideIndex === 3 ? 'active' : ''}`} onClick={() => currentSlide(3)}></span>
+                        <span className="dot" onClick={() => currentSlide(1)}></span>
+                        <span className="dot" onClick={() => currentSlide(2)}></span>
+                        <span className="dot" onClick={() => currentSlide(3)}></span>
                     </div>
                 </div>
             </div>

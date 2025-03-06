@@ -1,6 +1,9 @@
-
 * {box-sizing:border-box;
 }
+
+:root {
+    color: rgba(0, 0, 0, 1); 
+  }
 
 body { 
   padding: 38px 0px 100px 0px; 
